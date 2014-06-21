@@ -55,7 +55,7 @@ int main() {
 	ifstream in;
 	while(true){
 		cout << "Enter file name: ";
-		string s = get();
+		string s = getLine(); //to read string input from user using simpio.h library
 		in.open(s.c_str());
 		//Check if stream fails, if so, let the user know, and clear the stream so we can try again
 		if (!in.fail()){ break; }
