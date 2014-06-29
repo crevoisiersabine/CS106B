@@ -69,14 +69,18 @@ Vector_of_characters Read_file(Vector_of_characters &input_text){
 					// Extract characters from the stream, character by character as well as white space
 					char remaining;
 					myStream >> noskipws >> remaining;
-					input_text.push_back(remaining);
 					if(myStream.fail()) {break; }
+					input_text.push_back(remaining);
 					myStream.clear();
 				}
+				myStream.clear();
 			}
 			break;
 		}
 	}
+	// for(vector<char>::iterator anotherITR = input_text.begin(); anotherITR != input_text.end(); ++anotherITR)
+ // 		cout << *anotherITR << endl;
+
 	return input_text;
 }
 
