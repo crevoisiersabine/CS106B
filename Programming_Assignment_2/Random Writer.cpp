@@ -13,7 +13,7 @@ typedef vector<char> Vector_of_characters;
 //Function prototypes
 Vector_of_characters Read_file(Vector_of_characters &input_text);
 int Markov_model();
-map<string, int> Markov_text_analyser(Vector_of_characters &input_text, int model);
+map<string, vector<char> > Markov_text_analyser(Vector_of_characters &input_text, int model);
 
 //Main function
 int main(){
@@ -30,13 +30,14 @@ int main(){
 	}
 
 	//Make a mapping of all occurrences of a particular sequence based on the Markov model chosen
-	map<string, int> sequence_Map;
+	map<string, vector<char> > sequence_Map;
 	sequence_Map = Markov_text_analyser(input_text, model);
 
-	// for(map<string, int>::iterator itr = sequence_Map.begin(); itr != sequence_Map.end(); ++itr)
- // 		cout << itr->first << ": " << itr->second << endl;
-
-	
+	for(map<string, vector<char> >::iterator itr = sequence_Map.begin(); itr != sequence_Map.end(); ++itr){
+ 		cout << itr->first << endl;
+ 		for(vector<char>::iterator anotherITR = itr->second.begin(); anotherITR != itr->second.end(); ++anotherITR)
+ 			cout << *anotherITR << endl;
+ 	}
 
 	return 0;
 }
@@ -103,19 +104,25 @@ int Markov_model(){
 	}
 }
 
-map<string, int> Markov_text_analyser(Vector_of_characters &input_text, int model){
+map<string, vector<char> > Markov_text_analyser(Vector_of_characters &input_text, int model){
 
-	map<string, int> sequence_Map;
+	vector<char> characters_that_follow;
+
+	map<string, vector<char> > sequence_Map;
 	for(int i = 0; i < input_text.size(); i++){
 		string segment_key;
 		for(int j = i; j < model+i; j++){
 			segment_key += input_text[j];
 		}
 		if(sequence_Map.find(segment_key) == sequence_Map.end()){
-			sequence_Map.insert(make_pair(segment_key, 1));
+			vector<char> characters_that_follow;
+			characters_that_follow.push_back(input_text[i + model]);
+			sequence_Map.insert(make_pair(segment_key, characters_that_follow));
 		}
 		else{
-			sequence_Map.at(segment_key) = sequence_Map.at(segment_key) + 1;
+			characters_that_follow = sequence_Map.at(segment_key);
+			characters_that_follow.push_back(input_text[i + model]);
+			sequence_Map.at(segment_key) = characters_that_follow;
 		}
 	}
 	return sequence_Map;
